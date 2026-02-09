@@ -1,0 +1,43 @@
+# Netlify configuration file
+# This file configures how Netlify builds and deploys your site
+
+[build]
+  # No build command needed for static HTML
+  command = ""
+  # Publish the root directory
+  publish = "."
+
+[[redirects]]
+  # Redirect all 404s to index.html (for client-side routing if needed)
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = false
+
+# Headers for better security and caching
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Enable HTTPS
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "no-referrer-when-downgrade"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    # Cache images for 1 year
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/audio/*"
+  [headers.values]
+    # Cache audio for 1 year
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    # Don't cache HTML files
+    Cache-Control = "public, max-age=0, must-revalidate"
