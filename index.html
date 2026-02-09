@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Beautiful Wife, Navy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f9d5e5, #e2a9c2);
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #8a1c3a;
+        }
+
+        .background-images {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            opacity: 0.4;
+        }
+
+        .bg-image {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: opacity 0.5s ease;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+            z-index: 10;
+        }
+
+        /* Initial Screen */
+        .initial-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 90vh;
+            animation: fadeIn 2s ease;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            color: #b51e5b;
+            font-weight: 700;
+        }
+
+        .circle-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 40px auto;
+            cursor: pointer;
+        }
+
+        .circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ff4081, #d81b60);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(216, 27, 96, 0.4),
+                        inset 0 0 20px rgba(255, 255, 255, 0.3);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            position: relative;
+            overflow: hidden;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .circle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(216, 27, 96, 0.6),
+                        inset 0 0 30px rgba(255, 255, 255, 0.4);
+        }
+
+        .circle:before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, #ff4081, #ff80ab, #ff4081);
+            border-radius: 50%;
+            z-index: -1;
+            animation: rotate 10s linear infinite;
+        }
+
+        .tap-text {
+            font-size: 2rem;
+            color: white;
+            font-weight: bold;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            z-index: 2;
+        }
+
+        .tap-text span {
+            display: block;
+            font-size: 1.2rem;
+            margin-top: 10px;
+            font-weight: normal;
+        }
+
+        /* Password Screen */
+        .password-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 90vh;
+            animation: slideDown 1s ease;
+        }
+
+        .password-title {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #b51e5b;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .password-input-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2rem;
+            border: 2px solid #ff4081;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .password-input:focus {
+            border-color: #d81b60;
+        }
+
+        .password-submit {
+            background: linear-gradient(to right, #ff4081, #d81b60);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        .password-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(216, 27, 96, 0.4);
+        }
+
+        .error-message {
+            color: #f44336;
+            margin-top: 15px;
+            font-weight: bold;
+            display: none;
+        }
+
+        /* Love Screen */
+        .love-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            animation: fadeInLove 2s ease;
+        }
+
+        .heart-container {
+            position: relative;
+            width: 350px;
+            height: 350px;
+            margin: 30px auto;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        .heart {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #ff4081, #d81b60);
+            clip-path: polygon(50% 0%, 100% 35%, 82% 100%, 50% 75%, 18% 100%, 0% 35%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 40px rgba(216, 27, 96, 0.5);
+        }
+
+        .heart:before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            background: linear-gradient(45deg, #ff80ab, #ff4081);
+            clip-path: polygon(50% 0%, 100% 35%, 82% 100%, 50% 75%, 18% 100%, 0% 35%);
+        }
+
+        .love-message {
+            position: relative;
+            z-index: 2;
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-align: center;
+            padding: 30px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .video-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 30px auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .love-video {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(45deg, #1a1a2e, #16213e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            position: relative;
+        }
+
+        .video-placeholder {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .video-placeholder i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #ff4081;
+        }
+
+        .i-love-you-text {
+            font-size: 2.8rem;
+            color: #b51e5b;
+            margin: 40px 0;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            line-height: 1.4;
+        }
+
+        .message-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+            max-width: 800px;
+        }
+
+        .message-text {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            color: #8a1c3a;
+            margin-bottom: 20px;
+        }
+
+        .signature {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #d81b60;
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        .music-controls {
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .music-btn {
+            background: linear-gradient(to right, #ff4081, #d81b60);
+            color: white;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(216, 27, 96, 0.4);
+            transition: transform 0.3s ease;
+        }
+
+        .music-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .music-info {
+            font-size: 1.2rem;
+            color: #8a1c3a;
+            font-weight: bold;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes slideDown {
+            0% { transform: translateY(-100px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes fadeInLove {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            10%, 30% { transform: scale(1.05); }
+            20%, 40% { transform: scale(1.1); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .title, .password-title {
+                font-size: 2rem;
+            }
+            
+            .circle-container {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .heart-container {
+                width: 280px;
+                height: 280px;
+            }
+            
+            .i-love-you-text {
+                font-size: 2.2rem;
+            }
+            
+            .message-text {
+                font-size: 1.2rem;
+            }
+            
+            .background-images {
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: repeat(5, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title, .password-title {
+                font-size: 1.8rem;
+            }
+            
+            .circle-container {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .heart-container {
+                width: 230px;
+                height: 230px;
+            }
+            
+            .i-love-you-text {
+                font-size: 1.8rem;
+            }
+            
+            .password-input-container {
+                padding: 20px;
+            }
+            
+            .background-images {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(6, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Images -->
+    <div class="background-images" id="backgroundImages"></div>
+    
+    <!-- Initial Screen with Circle -->
+    <div class="container">
+        <div class="initial-screen" id="initialScreen">
+            <h1 class="title">For My Beautiful Wife, Navy</h1>
+            <div class="circle-container">
+                <div class="circle" id="circle">
+                    <div class="tap-text">
+                        Tap Me <span>My Love</span>
+                    </div>
+                </div>
+            </div>
+            <p style="margin-top: 20px; font-size: 1.2rem; color: #8a1c3a;">
+                This is a special gift from your husband
+            </p>
+        </div>
+        
+        <!-- Password Screen -->
+        <div class="password-screen" id="passwordScreen">
+            <h1 class="password-title">What's the Secret Password?</h1>
+            <div class="password-input-container">
+                <input type="text" class="password-input" id="passwordInput" placeholder="Enter the password...">
+                <button class="password-submit" id="passwordSubmit">Enter Our Special World</button>
+                <div class="error-message" id="errorMessage">Incorrect password. Try again!</div>
+            </div>
+            <p style="color: #8a1c3a; font-size: 1.1rem;">
+                Hint: It's how we greet each other every day
+            </p>
+        </div>
+        
+        <!-- Love Screen -->
+        <div class="love-screen" id="loveScreen">
+            <h1 class="i-love-you-text">I Love You Always, My Wife</h1>
+            
+            <div class="heart-container">
+                <div class="heart">
+                    <div class="love-message">
+                        My Dearest Navy,<br>You Are My Everything
+                    </div>
+                </div>
+            </div>
+            
+            <div class="video-container">
+                <div class="love-video">
+                    <div class="video-placeholder">
+                        <i class="fas fa-heart"></i>
+                        <p>Our Love Story</p>
+                        <p>maybe not perfect but your very perfect for me</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="message-container">
+                <p class="message-text">
+                    To my beautiful wife Navy,<br><br>
+                    Every moment with you is a treasure. Your smile lights up my world, 
+                    your laughter is my favorite melody, and your love is the greatest gift I've ever received.
+                    <br><br>
+                    No matter how many times I say it, it will never be enough: I love you more than words can express.
+                    Today, tomorrow, and always, you have my heart completely,i love you navs.
+                </p>
+                <div class="signature">Forever yours,<br>Your Loving Husband</div>
+            </div>
+            
+            <div class="music-controls">
+                <button class="music-btn" id="playBtn">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button class="music-btn" id="pauseBtn">
+                    <i class="fas fa-pause"></i>
+                </button>
+                <div class="music-info">"I Got You" remember this song.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const initialScreen = document.getElementById('initialScreen');
+        const passwordScreen = document.getElementById('passwordScreen');
+        const loveScreen = document.getElementById('loveScreen');
+        const circle = document.getElementById('circle');
+        const passwordInput = document.getElementById('passwordInput');
+        const passwordSubmit = document.getElementById('passwordSubmit');
+        const errorMessage = document.getElementById('errorMessage');
+        const playBtn = document.getElementById('playBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const backgroundImages = document.getElementById('backgroundImages');
+        
+        // Audio
+        const audio = new Audio('audio/i got you.mp3');
+        audio.loop = true;
+        
+        // Image paths - using the images from your folder
+        const imageFiles = [
+            'images/472236021_620025943707259_3257778244967492244_n.jpg',
+            'images/472750676_623146386728548_714367974535275418_n.jpg',
+            'images/472770874_623159250060595_4712320223723967178_n.jpg',
+            'images/473066946_623272360049284_6106609957353548623_n.jpg',
+            'images/473073941_623156960060824_3307914458357113088_n.jpg',
+            'images/473081255_623804949996025_2559886727119028314_n.jpg',
+            'images/473100070_623304486712738_5068260756928960034_n.jpg',
+            'images/473245406_625480653161788_5704200844198755962_n.jpg',
+            'images/476185747_641467471563106_2875343853282294608_n.jpg',
+            'images/480139122_648128387563681_7025913144304657424_n.jpg',
+            'images/480551382_668442608865592_3162334103615252891_n.jpg',
+            'images/480559229_650187144024472_2683515232831514166_n.jpg',
+            'images/481659851_656543543388832_5609595096517843486_n.jpg',
+            'images/482356949_664356059274247_1060564640273985135_n.jpg',
+            'images/482987134_666635692379617_9099857493034237274_n.jpg',
+            'images/483103129_666791125697407_4170273378357654050_n.jpg',
+            'images/483104054_666800422363144_3184798300413998506_n.jpg',
+            'images/483881529_666791095697410_3878011704082096083_n.jpg',
+            'images/484106747_666105595765960_2274595959004085426_n.jpg',
+            'images/484141801_668958892147297_4067964966096333720_n.jpg',
+            'images/484147145_668957448814108_6590433606646762630_n.jpg',
+            'images/492205458_693617233014796_3474223643021287671_n.jpg',
+            'images/536576723_789014326808419_334782414891229330_n.jpg',
+            'images/588396643_863886685987849_4503037576787900338_n.jpg'
+        ];
+        
+        // Create background image grid
+        function createBackgroundImages() {
+            // Create 16 image divs (for a 4x4 grid)
+            for (let i = 0; i < 16; i++) {
+                const imgDiv = document.createElement('div');
+                imgDiv.className = 'bg-image';
+                // Assign a random image from the list
+                const randomImage = imageFiles[Math.floor(Math.random() * imageFiles.length)];
+                imgDiv.style.backgroundImage = `url('${randomImage}')`;
+                backgroundImages.appendChild(imgDiv);
+            }
+            
+            // Change images periodically
+            setInterval(() => {
+                const allBgImages = document.querySelectorAll('.bg-image');
+                allBgImages.forEach(imgDiv => {
+                    // Randomly change some images
+                    if (Math.random() > 0.7) {
+                        const randomImage = imageFiles[Math.floor(Math.random() * imageFiles.length)];
+                        imgDiv.style.opacity = '0.3';
+                        setTimeout(() => {
+                            imgDiv.style.backgroundImage = `url('${randomImage}')`;
+                            imgDiv.style.opacity = '0.4';
+                        }, 500);
+                    }
+                });
+            }, 3000);
+        }
+        
+        // Event Listeners
+        circle.addEventListener('click', () => {
+            initialScreen.style.display = 'none';
+            passwordScreen.style.display = 'flex';
+        });
+        
+        passwordSubmit.addEventListener('click', checkPassword);
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+        
+        function checkPassword() {
+            const password = passwordInput.value.trim().toLowerCase();
+            
+            if (password === 'hi') {
+                // Correct password
+                passwordScreen.style.display = 'none';
+                loveScreen.style.display = 'flex';
+                
+                // Play music after a short delay
+                setTimeout(() => {
+                    audio.play().catch(e => {
+                        console.log("Autoplay prevented. User needs to interact first.");
+                        // Show instruction to click play button
+                    });
+                }, 1000);
+            } else {
+                // Incorrect password
+                errorMessage.style.display = 'block';
+                passwordInput.value = '';
+                passwordInput.focus();
+                
+                // Shake animation for error
+                passwordInput.style.animation = 'none';
+                setTimeout(() => {
+                    passwordInput.style.animation = 'shake 0.5s ease';
+                }, 10);
+                
+                // Remove shake animation after it completes
+                setTimeout(() => {
+                    passwordInput.style.animation = '';
+                }, 500);
+            }
+        }
+        
+        // Music controls
+        playBtn.addEventListener('click', () => {
+            audio.play();
+        });
+        
+        pauseBtn.addEventListener('click', () => {
+            audio.pause();
+        });
+        
+        // Initialize background images
+        createBackgroundImages();
+        
+        // Add shake animation for password error
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                20%, 40%, 60%, 80% { transform: translateX(5px); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Add floating "I Love You" text elements
+        function createFloatingHearts() {
+            const loveScreen = document.getElementById('loveScreen');
+            
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.style.position = 'absolute';
+                heart.style.fontSize = Math.random() * 20 + 15 + 'px';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = Math.random() * 100 + 'vh';
+                heart.style.opacity = Math.random() * 0.5 + 0.2;
+                heart.style.zIndex = '1';
+                heart.style.pointerEvents = 'none';
+                heart.style.animation = `float ${Math.random() * 10 + 10}s linear infinite`;
+                document.body.appendChild(heart);
+            }
+        }
+        
+        // Initialize when love screen is shown
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                    if (loveScreen.style.display === 'flex') {
+                        createFloatingHearts();
+                    }
+                }
+            });
+        });
+        
+        observer.observe(loveScreen, { attributes: true });
+    </script>
+</body>
+</html>
